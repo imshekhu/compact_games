@@ -1,0 +1,31 @@
+version: "3.8"
+   
+services:
+ pg_db:
+        image: postgres
+        container_name: pg_db
+        environment:
+        - POSTGRES_DB=gamesdb
+        - POSTGRES_USER=gamer
+        - POSTGRES_PASSWORD=postgres
+        ports:  
+            - "5432:5432"
+           
+
+    
+ game_application:
+        build: .
+        container_name: game_application
+        command: >
+            sh -c "pip3 install -r requirements.txt &&
+                   python manage.py makemigrations &&
+                   python manage.py migrate &&
+                   python manage.py test &&
+                   coverage run --source='./api' --omit=*/scripts/*,*/models.py,*/views.py  manage.py test
+                   coverage report
+                   coverage html
+                   python manage.py runserver 0.0.0.0:8000"
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - "8000:8000"

@@ -1,3 +1,4 @@
+from urllib import request
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -21,7 +22,7 @@ class GameCreateView (APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(operation_description="POST api/v1/games/",  request_body=GamesSerializer)
-    def post(self, request ):
+    def post(self, request:request ):
         """
         Create New Game.
         """
@@ -31,7 +32,7 @@ class GameCreateView (APIView):
 class BestValueView (APIView):
     q = openapi.Parameter('pen_drive_space', openapi.IN_QUERY, description="100", type=openapi.TYPE_INTEGER)
     @swagger_auto_schema(operation_description="GET /api/best_value_games/", manual_parameters = [q])
-    def get(self, request ):
+    def post(self, request:request ):
         """
         Get Game as List
         """
@@ -45,7 +46,7 @@ class DbStatusView(APIView):
     permission_classes = (AllowAny,)
 
     @swagger_auto_schema(operation_description="GET api/v1/status/")
-    def get(self, request):
+    def get(self, request:request):
         db_conn = connections['default']
         try:
             c = db_conn.cursor()

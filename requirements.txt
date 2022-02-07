@@ -5,3 +5,4 @@ drf-yasg
 coverage
 flake8
 flake8-html
+pytest-django

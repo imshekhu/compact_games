@@ -1,4 +1,5 @@
 from typing import Dict
+from urllib import request
 from .models import Games
 from .serializer import GamesSerializer
 from rest_framework import status
@@ -8,9 +9,14 @@ from django.db.models import F
 
 class GamesService ():
 
-    def create(self, request )->Dict:
+    def create(self, request:request ) -> Dict:
         """
-        Create a Game.
+        create a game
+        Args:
+            request (request): takes the request argument provided by django
+
+        Returns:
+            Dict: With data in "data" key
         """
         # self.validate_data(request.data)
 
@@ -23,7 +29,7 @@ class GamesService ():
         # if not valid
         return ({"data": serializer.errors, "code": status.HTTP_400_BAD_REQUEST, "message": "Bad Request"})
     
-    def get_best_value(self, request) -> Dict:
+    def get_best_value(self, request:request) -> Dict:
         """
         Args:
             request ([type]): [description]
@@ -43,7 +49,7 @@ class GamesService ():
             
         serializer = GamesSerializer(queryset, many=True)
         return ({"games": serializer.data,
-                 "code": status.HTTP_201_CREATED,
+                 "code": status.HTTP_200_OK,
                  "total_space": int(des_space),
                  "remaining_space": int(des_space)-queryset.aggregate(Sum('space'))['space__sum'] })
         
